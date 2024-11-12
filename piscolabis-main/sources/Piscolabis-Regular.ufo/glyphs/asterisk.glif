@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="asterisk" format="2">
+  <advance width="293"/>
+  <unicode hex="002A"/>
+  <guideline x="146.5" y="573" angle="90"/>
+  <outline>
+    <contour>
+      <point x="189" y="451.5" type="line"/>
+      <point x="251" y="496.5" type="line"/>
+      <point x="156.5" y="582" type="line"/>
+      <point x="136.5" y="568" type="line"/>
+    </contour>
+    <contour>
+      <point x="104" y="451.5" type="line"/>
+      <point x="156.5" y="568" type="line"/>
+      <point x="136.5" y="582" type="line"/>
+      <point x="42" y="496.5" type="line"/>
+    </contour>
+    <contour>
+      <point x="143" y="563.5" type="line"/>
+      <point x="150" y="586.5" type="line"/>
+      <point x="39.5" y="650" type="line"/>
+      <point x="16" y="577.5" type="line"/>
+    </contour>
+    <contour>
+      <point x="134.5" y="575" type="line"/>
+      <point x="158.5" y="575" type="line"/>
+      <point x="184.5" y="700" type="line"/>
+      <point x="108.5" y="700" type="line"/>
+    </contour>
+    <contour>
+      <point x="150" y="563.5" type="line"/>
+      <point x="277" y="577.5" type="line"/>
+      <point x="253.5" y="650" type="line"/>
+      <point x="143" y="586.5" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2023-06-06 07:09:33 +0000</string>
+      <key>com.schriftgestaltung.Glyphs.leftMetricsKey</key>
+      <string>period</string>
+      <key>com.schriftgestaltung.Glyphs.rightMetricsKey</key>
+      <string>period</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

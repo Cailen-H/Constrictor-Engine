@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="d" format="2">
+  <advance width="363"/>
+  <unicode hex="0064"/>
+  <guideline x="172" y="382" angle="90"/>
+  <outline>
+    <contour>
+      <point x="257" y="0" type="line"/>
+      <point x="325" y="0" type="line"/>
+      <point x="325" y="805" type="line"/>
+      <point x="225" y="775" type="line"/>
+      <point x="225" y="150" type="line"/>
+    </contour>
+    <component base="_part.bowl" xScale="-1" yScale="-1" xOffset="363" yOffset="500"/>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2023-06-07 13:58:23 +0000</string>
+      <key>com.schriftgestaltung.Glyphs.leftMetricsKey</key>
+      <string>o</string>
+      <key>com.schriftgestaltung.Glyphs.rightMetricsKey</key>
+      <string>l</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

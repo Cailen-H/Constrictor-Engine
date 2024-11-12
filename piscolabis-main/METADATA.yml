@@ -1,0 +1,17 @@
+---
+unified font repository version: "0.2"
+unified font repository url: https://github.com/raphaelbastide/Unified-Font-Repository/
+typeface family:
+  name: Piscolabis
+  tags:
+  - condensed
+  - bold
+  - sans serif
+  repository url: https://gitlab.com/arielmartinperez/piscolabis
+  project status: published
+  tools:
+  - Glyphs
+  similar fonts: Carnaby Street
+  sample text:
+  - en_us: Sphinx of black quartz, judge my vow.
+...

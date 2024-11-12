@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="i" format="2">
+  <advance width="176"/>
+  <unicode hex="0069"/>
+  <guideline x="136" y="672.5" angle="0"/>
+  <outline>
+    <component base="dotlessi"/>
+    <component base="uni0307" xOffset="9.5" yOffset="-200"/>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2023-06-07 08:35:41 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

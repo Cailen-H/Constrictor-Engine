@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="t" format="2">
+  <advance width="278"/>
+  <unicode hex="0074"/>
+  <guideline x="172" y="631" angle="0"/>
+  <anchor x="126" y="0" name="bottom"/>
+  <anchor x="126" y="250" name="center"/>
+  <anchor x="126" y="621" name="top"/>
+  <anchor x="275" y="800" name="topright"/>
+  <outline>
+    <contour>
+      <point x="76" y="0" type="line"/>
+      <point x="176" y="0" type="line"/>
+      <point x="176" y="631" type="line"/>
+      <point x="76" y="600" type="line"/>
+    </contour>
+    <contour>
+      <point x="16" y="420" type="line"/>
+      <point x="262" y="420" type="line"/>
+      <point x="262" y="500" type="line"/>
+      <point x="16" y="500" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2023-06-09 07:24:31 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

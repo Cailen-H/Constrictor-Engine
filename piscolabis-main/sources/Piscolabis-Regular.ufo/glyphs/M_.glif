@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="M" format="2">
+  <advance width="591.5"/>
+  <unicode hex="004D"/>
+  <guideline x="86.5" y="700" angle="90"/>
+  <outline>
+    <contour>
+      <point x="232.5" y="0" type="line"/>
+      <point x="362.5" y="0" type="line"/>
+      <point x="464" y="700" type="line"/>
+      <point x="389" y="700" type="line"/>
+      <point x="289" y="10" type="line"/>
+      <point x="307" y="10" type="line"/>
+      <point x="212.5" y="700" type="line"/>
+      <point x="127.5" y="700" type="line"/>
+    </contour>
+    <contour>
+      <point x="36" y="0" type="line"/>
+      <point x="141" y="0" type="line"/>
+      <point x="141" y="700" type="line"/>
+      <point x="36" y="700" type="line"/>
+    </contour>
+    <contour>
+      <point x="450.5" y="0" type="line"/>
+      <point x="555.5" y="0" type="line"/>
+      <point x="555.5" y="700" type="line"/>
+      <point x="450.5" y="700" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2023-06-09 06:20:01 +0000</string>
+      <key>com.schriftgestaltung.Glyphs.leftMetricsKey</key>
+      <string>H</string>
+      <key>com.schriftgestaltung.Glyphs.rightMetricsKey</key>
+      <string>H</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

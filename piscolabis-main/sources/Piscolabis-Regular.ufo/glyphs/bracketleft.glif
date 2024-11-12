@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="bracketleft" format="2">
+  <advance width="236"/>
+  <unicode hex="005B"/>
+  <guideline x="206" y="-25" angle="0"/>
+  <outline>
+    <contour>
+      <point x="36" y="-25" type="line"/>
+      <point x="136" y="-25" type="line"/>
+      <point x="136" y="725" type="line"/>
+      <point x="36" y="725" type="line"/>
+    </contour>
+    <contour>
+      <point x="36" y="-25" type="line"/>
+      <point x="206" y="-25" type="line"/>
+      <point x="206" y="55" type="line"/>
+      <point x="36" y="55" type="line"/>
+    </contour>
+    <contour>
+      <point x="36" y="645" type="line"/>
+      <point x="206" y="645" type="line"/>
+      <point x="206" y="725" type="line"/>
+      <point x="36" y="725" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2023-06-06 07:09:33 +0000</string>
+      <key>com.schriftgestaltung.Glyphs.leftMetricsKey</key>
+      <string>H</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

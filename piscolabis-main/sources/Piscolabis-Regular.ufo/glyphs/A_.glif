@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="A" format="2">
+  <advance width="388"/>
+  <unicode hex="0041"/>
+  <guideline x="193" y="128" angle="0"/>
+  <guideline x="304" y="615" angle="0"/>
+  <anchor x="195" y="0" name="bottom"/>
+  <anchor x="374" y="0" name="ogonek"/>
+  <anchor x="195" y="700" name="top"/>
+  <outline>
+    <contour>
+      <point x="70.5" y="128" type="line"/>
+      <point x="315" y="128" type="line"/>
+      <point x="315" y="218" type="line"/>
+      <point x="70.5" y="218" type="line"/>
+    </contour>
+    <component base="V" xScale="-1" yScale="-1" xOffset="388" yOffset="700" identifier="67F78D76"/>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2023-06-09 06:26:10 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+      <key>public.objectLibs</key>
+      <dict>
+        <key>67F78D76</key>
+        <dict>
+          <key>com.schriftgestaltung.alignment</key>
+          <integer>-1</integer>
+        </dict>
+      </dict>
+    </dict>
+  </lib>
+</glyph>

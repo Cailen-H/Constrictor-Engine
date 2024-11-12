@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="dagger" format="2">
+  <advance width="282"/>
+  <unicode hex="2020"/>
+  <outline>
+    <contour>
+      <point x="129.5" y="275" type="line"/>
+      <point x="153.5" y="275" type="line"/>
+      <point x="179.5" y="475" type="line"/>
+      <point x="103.5" y="475" type="line"/>
+    </contour>
+    <contour>
+      <point x="16" y="537.5" type="line"/>
+      <point x="141" y="563.5" type="line"/>
+      <point x="141" y="587.5" type="line"/>
+      <point x="16" y="613.5" type="line"/>
+    </contour>
+    <contour>
+      <point x="103.5" y="475" type="line"/>
+      <point x="179.5" y="475" type="line"/>
+      <point x="153.5" y="575" type="line"/>
+      <point x="129.5" y="575" type="line"/>
+    </contour>
+    <contour>
+      <point x="129.5" y="575" type="line"/>
+      <point x="153.5" y="575" type="line"/>
+      <point x="179.5" y="700" type="line"/>
+      <point x="103.5" y="700" type="line"/>
+    </contour>
+    <contour>
+      <point x="266" y="537.5" type="line"/>
+      <point x="266" y="613.5" type="line"/>
+      <point x="141" y="587.5" type="line"/>
+      <point x="141" y="563.5" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2023-06-06 07:09:33 +0000</string>
+      <key>com.schriftgestaltung.Glyphs.leftMetricsKey</key>
+      <string>period</string>
+      <key>com.schriftgestaltung.Glyphs.rightMetricsKey</key>
+      <string>period</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

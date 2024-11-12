@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="lslash" format="2">
+  <advance width="250"/>
+  <unicode hex="0142"/>
+  <outline>
+    <contour>
+      <point x="33.5" y="248.5" type="line"/>
+      <point x="244" y="397" type="line"/>
+      <point x="217" y="433.5" type="line"/>
+      <point x="6" y="285.5" type="line"/>
+    </contour>
+    <component base="l" xOffset="36"/>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2023-06-08 06:34:32 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

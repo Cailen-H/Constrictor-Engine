@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="f" format="2">
+  <advance width="298.5"/>
+  <unicode hex="0066"/>
+  <guideline x="288.5" y="540" angle="90"/>
+  <guideline x="190" y="710" angle="0"/>
+  <outline>
+    <contour>
+      <point x="76" y="585.5" type="curve" smooth="yes"/>
+      <point x="76" y="0.5" type="line"/>
+      <point x="176" y="0.5" type="line"/>
+      <point x="176" y="560" type="line" smooth="yes"/>
+      <point x="176" y="608"/>
+      <point x="187.5" y="630"/>
+      <point x="217" y="630" type="curve" smooth="yes"/>
+      <point x="228" y="630"/>
+      <point x="242" y="626.5"/>
+      <point x="258.5" y="620.5" type="curve"/>
+      <point x="292.5" y="690.5" type="line"/>
+      <point x="254.5" y="703"/>
+      <point x="220" y="710"/>
+      <point x="190" y="710" type="curve" smooth="yes"/>
+      <point x="120" y="710"/>
+      <point x="76" y="673"/>
+    </contour>
+    <contour>
+      <point x="16" y="420" type="line"/>
+      <point x="278.5" y="420" type="line"/>
+      <point x="278.5" y="500" type="line"/>
+      <point x="16" y="500" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2023-06-09 07:37:39 +0000</string>
+      <key>com.schriftgestaltung.Glyphs.leftMetricsKey</key>
+      <string>t</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>
