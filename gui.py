@@ -20,19 +20,19 @@ ROOK = 5
 QUEEN = 6
 
 
-white = [pg.image.load("pieces/white_king.png"),
-         pg.image.load("pieces/white_pawn.png"),
-         pg.image.load("pieces/white_knight.png"),
-         pg.image.load("pieces/white_bishop.png"),
-         pg.image.load("pieces/white_rook.png"),
-         pg.image.load("pieces/white_queen.png")]
+piece_imgs = {KING : pg.image.load("pieces/white_king.png"),
+              PAWN : pg.image.load("pieces/white_pawn.png"),
+              KNIGHT : pg.image.load("pieces/white_knight.png"),
+              BISHOP : pg.image.load("pieces/white_bishop.png"),
+              ROOK : pg.image.load("pieces/white_rook.png"),
+              QUEEN : pg.image.load("pieces/white_queen.png"),
+              KING + 6 : pg.image.load("pieces/black_king.png"),
+              PAWN + 6 : pg.image.load("pieces/black_pawn.png"),
+              KNIGHT + 6 : pg.image.load("pieces/black_knight.png"),
+              BISHOP + 6 : pg.image.load("pieces/black_bishop.png"),
+              ROOK + 6 : pg.image.load("pieces/black_rook.png"),
+              QUEEN + 6 : pg.image.load("pieces/black_queen.png")}
 
-black = [pg.image.load("pieces/black_king.png"),
-         pg.image.load("pieces/black_pawn.png"),
-         pg.image.load("pieces/black_knight.png"),
-         pg.image.load("pieces/black_bishop.png"),
-         pg.image.load("pieces/black_rook.png"),
-         pg.image.load("pieces/black_queen.png")]
 
 move_opt = pg.image.load("move.png")
 take_opt = pg.image.load("take.png")
@@ -95,7 +95,7 @@ def board_to_fen(board):
     return fen_from_board
 
 
-def draw_bg(board, legal_moves, takes):
+def draw_bg(board, legal_moves, takes, drag_n_drop=[False, -1, (0, 0)]):
     """ draw squares, pieces and side bar """
     count = 1
 
@@ -112,55 +112,17 @@ def draw_bg(board, legal_moves, takes):
 
             pg.draw.rect(screen, col, pg.Rect(x, y, 188, 188))
 
-            if board[square] != 0:
-                # white king
-                if board[square] == KING:
-                    screen.blit(white[0], (x, y))
-                
-                # black king
-                elif board[square] == KING + 6:
-                    screen.blit(black[0], (x, y))
-
-                # white pawn
-                if board[square] == PAWN:
-                    screen.blit(white[1], (x, y))
-                
-                # black pawn
-                elif board[square] == PAWN + 6:
-                    screen.blit(black[1], (x, y))
-
-                # white knight
-                if board[square] == KNIGHT:
-                    screen.blit(white[2], (x, y))
-                
-                # black knight
-                elif board[square] == KNIGHT + 6:
-                    screen.blit(black[2], (x, y))
-
-                # white bishop
-                if board[square] == BISHOP:
-                    screen.blit(white[3], (x, y))
-                
-                # black bishop
-                elif board[square] == BISHOP + 6:
-                    screen.blit(black[3], (x, y))
-                
-                # white rook
-                if board[square] == ROOK:
-                    screen.blit(white[4], (x, y))
-                
-                # black rook
-                elif board[square] == ROOK + 6:
-                    screen.blit(black[4], (x, y))
-
-                # white queen
-                if board[square] == QUEEN:
-                    screen.blit(white[5], (x, y))
-                
-                # black queen
-                elif board[square] == QUEEN + 6:
-                    screen.blit(black[5], (x, y))
-                
+            # skip piece in drag n drop state
+            if (drag_n_drop[0] is True) and (drag_n_drop[1] == square):
+                count += 1
+                square += 1
+                continue
+            
+            # draw piece
+            if board[square] != EMPTY:
+                screen.blit(piece_imgs[board[square]], (x, y))
+            
+            # draw move options
             if square in legal_moves:
                 if takes[legal_moves.index(square)] is True:
                     screen.blit(take_opt, (x, y))
@@ -176,6 +138,11 @@ def draw_bg(board, legal_moves, takes):
     # draw sidebar
     bg_col = (36, 11, 54)
     pg.draw.rect(screen, bg_col, pg.Rect(1504, 0, 416, 1504))
+
+    # draw drag n drop piece
+    if drag_n_drop[0] is True:
+        screen.blit(piece_imgs[board[drag_n_drop[1]]], drag_n_drop[2])
+
 
 
 def get_legal(board, index):
@@ -338,8 +305,6 @@ def get_legal(board, index):
                 takes.append(False)
             elif i != index:
                 break
-
-        print(len(moves))
         
         # up + right
         i = index
@@ -411,8 +376,6 @@ def get_legal(board, index):
                 break
             elif i != index:
                 break
-
-        print(len(moves))
         
         # up + right
         i = index
@@ -607,6 +570,25 @@ def in_check(board, king_index):
     return False
 
 
+def move_piece(board, moving_piece_index, to_move_to_index, piece_offset):
+    square_copy = board[to_move_to_index]
+    board[to_move_to_index] = board[moving_piece_index]
+    board[moving_piece_index] = EMPTY
+
+    # Check if move results in check for white/black. If so reverse move as it is not legal.
+    if in_check(board, board.index(KING + piece_offset)):
+        moved_piece = board[to_move_to_index]
+        board[to_move_to_index] = square_copy
+        board[moving_piece_index] = moved_piece
+
+        # move failed 
+        return (board, False)
+
+    # move succeeded
+    return (board, True)
+
+
+
 board = fen_to_board(start_fen)
 legal_moves = []
 take_moves = []
@@ -616,7 +598,8 @@ moving_index = 0
 
 white_move = True
 
-
+piece_drag = False
+drag_n_drop_details = [False, -1, (0, 0)]
 
 
 
@@ -641,57 +624,70 @@ if __name__ == "__main__":
                     if (board[board_index] <= QUEEN) and not(board_index in legal_moves):
                         legal_moves, take_moves = get_legal(board, board_index)
                         moving_index = board_index
+                        piece_drag = True
                 
                     # move piece
                     if board_index in legal_moves:
-                        square_copy = board[board_index]
-                        board[board_index] = board[moving_index]
-                        board[moving_index] = EMPTY
+                        board, move_made = move_piece(board, moving_index, board_index, piece_offset=0)
 
-                        # Check if move results in check for white. If so reverse move as it is not legal.
-                        if in_check(board, board.index(KING)):
-                            moved_piece = board[board_index]
-                            board[board_index] = square_copy
-                            board[moving_index] = moved_piece
-                            legal_moves = []
-                            take_moves = []
-                        else:
-                            legal_moves = []
-                            take_moves = []
+                        legal_moves = []
+                        take_moves = []
+
+                        if move_made:
                             white_move = False
-                
+
                 # black's move
                 else:
                     if (board[board_index] > QUEEN) and not(board_index in legal_moves):
                         legal_moves, take_moves = get_legal(board, board_index)
                         moving_index = board_index
+                        piece_drag = True
                 
                     # move piece
                     if board_index in legal_moves:
-                        square_copy = board[board_index]
-                        board[board_index] = board[moving_index]
-                        board[moving_index] = EMPTY
+                        board, move_made = move_piece(board, moving_index, board_index, piece_offset=6)
 
-                        # Check if move results in check for black. If so reverse move as it is not legal.
-                        if in_check(board, board.index(KING + 6)):
-                            moved_piece = board[board_index]
-                            board[board_index] = square_copy
-                            board[moving_index] = moved_piece
-                            legal_moves = []
-                            take_moves = []
-                        else:
-                            legal_moves = []
-                            take_moves = []
+                        legal_moves = []
+                        take_moves = []
+
+                        if move_made:
                             white_move = True
+            
+            # drag and drop move handling
+            elif event.type == pg.MOUSEBUTTONUP:
+                piece_drag = False
+
+                pos = pg.mouse.get_pos()
+
+                rank = pos[1] // 188
+                file = pos[0] // 188
+
+                board_index = rank * 8 + file
+
+                # move piece
+                if board_index in legal_moves:
+                    board, move_made = move_piece(board, moving_index, board_index, piece_offset=6)
+
+                    legal_moves = []
+                    take_moves = []
+
+                    if move_made:
+                        white_move = not(white_move)
+                
+                piece_drag = False
+                drag_n_drop_details = [False, -1, (0, 0)]
+
             
             # close window / exit
             if event.type == pg.QUIT:
                 quit()
 
 
-
+        if piece_drag:
+            positionx, positiony = pg.mouse.get_pos()
+            drag_n_drop_details = [True, moving_index, (positionx - 94, positiony - 94)]
         
-        draw_bg(board, legal_moves, take_moves)
+        draw_bg(board, legal_moves, take_moves, drag_n_drop_details)
         
         # display current move colour
         if white_move:
