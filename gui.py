@@ -136,7 +136,7 @@ def draw_bg(board, legal_moves, takes, drag_n_drop=[False, -1, (0, 0)]):
 
     
     # draw sidebar
-    bg_col = (36, 11, 54)
+    bg_col = (30, 30, 36)
     pg.draw.rect(screen, bg_col, pg.Rect(1504, 0, 416, 1504))
 
     # draw drag n drop piece
@@ -583,9 +583,10 @@ def move_piece(board, moving_piece_index, to_move_to_index, piece_offset):
 
         # move failed 
         return (board, False)
-
-    # move succeeded
-    return (board, True)
+    
+    else:
+        # move succeeded
+        return (board, True)
 
 
 
@@ -621,10 +622,12 @@ if __name__ == "__main__":
 
                 # white's move
                 if white_move is True:
-                    if (board[board_index] <= QUEEN) and not(board_index in legal_moves):
+                    if ((board[board_index] <= QUEEN) and not(board_index in legal_moves)):
                         legal_moves, take_moves = get_legal(board, board_index)
                         moving_index = board_index
-                        piece_drag = True
+
+                        if board[board_index] != EMPTY:
+                            piece_drag = True
                 
                     # move piece
                     if board_index in legal_moves:
@@ -635,13 +638,17 @@ if __name__ == "__main__":
 
                         if move_made:
                             white_move = False
-
+                            piece_drag = False
+                            drag_n_drop_details = [False, -1, (0, 0)]
+                
                 # black's move
                 else:
-                    if (board[board_index] > QUEEN) and not(board_index in legal_moves):
+                    if ((board[board_index] > QUEEN) or (board[board_index] == EMPTY)) and not(board_index in legal_moves):
                         legal_moves, take_moves = get_legal(board, board_index)
                         moving_index = board_index
-                        piece_drag = True
+                        
+                        if board[board_index] != EMPTY:
+                            piece_drag = True
                 
                     # move piece
                     if board_index in legal_moves:
@@ -652,6 +659,8 @@ if __name__ == "__main__":
 
                         if move_made:
                             white_move = True
+                            piece_drag = False
+                            drag_n_drop_details = [False, -1, (0, 0)]
             
             # drag and drop move handling
             elif event.type == pg.MOUSEBUTTONUP:
@@ -666,7 +675,12 @@ if __name__ == "__main__":
 
                 # move piece
                 if board_index in legal_moves:
-                    board, move_made = move_piece(board, moving_index, board_index, piece_offset=6)
+                    if white_move:
+                        piece_offset = 0
+                    else:
+                        piece_offset = 6
+
+                    board, move_made = move_piece(board, moving_index, board_index, piece_offset)
 
                     legal_moves = []
                     take_moves = []
@@ -691,9 +705,9 @@ if __name__ == "__main__":
         
         # display current move colour
         if white_move:
-            screen.blit(piscolabis_font.render("White to move", True, (246, 71, 64), (141, 152, 167)), (1565, 752))
+            screen.blit(piscolabis_font.render("White to move", True, (255, 90, 95)), (1565, 752))
         else:
-            screen.blit(piscolabis_font.render("Black to move", True, (246, 71, 64), (141, 152, 167)), (1565, 752))
+            screen.blit(piscolabis_font.render("Black to move", True, (255, 90, 95)), (1565, 752))
         
         pg.display.update()
         
