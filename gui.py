@@ -141,7 +141,11 @@ def draw_bg(board, legal_moves, takes, drag_n_drop=[False, -1, (0, 0)]):
 
     # draw drag n drop piece
     if drag_n_drop[0] is True:
-        screen.blit(piece_imgs[board[drag_n_drop[1]]], drag_n_drop[2])
+        # temporary scaled up image of piece that is being dragged
+        temp_img = pg.transform.scale_by(piece_imgs[board[drag_n_drop[1]]], 1.1)
+
+
+        screen.blit(temp_img, drag_n_drop[2])
 
 
 
@@ -308,10 +312,10 @@ def get_legal(board, index):
         
         # up + right
         i = index
-        while ((i % 8 != 0) and (i < 64)) and (i >= 0): 
-            if (i >= 64) or (i < 0):
+        while (i < 64) and (i >= 0): 
+            if (i != index) and (i % 8 == 0):
                 break
-
+            
             if board[i] > QUEEN:
                 moves.append(i)
                 takes.append(True)
@@ -328,7 +332,10 @@ def get_legal(board, index):
         # down + right
         i = index
 
-        while ((i % 8 != 0) and (i < 64)) and (i >= 0):
+        while (i < 64) and (i >= 0):
+            if (i != index) and (i % 8 == 0):
+                break
+
             if board[i] > QUEEN:
                 moves.append(i)
                 takes.append(True)
@@ -379,8 +386,8 @@ def get_legal(board, index):
         
         # up + right
         i = index
-        while ((i % 8 != 0) and (i < 64)) and (i >= 0): 
-            if (i >= 64) or (i < 0):
+        while (i < 64) and (i >= 0): 
+            if (i != index) and (i % 8 == 0):
                 break
             if board[i] == EMPTY:
                 moves.append(i)
@@ -398,7 +405,9 @@ def get_legal(board, index):
         # down + right
         i = index
 
-        while ((i % 8 != 0) and (i < 64)) and (i >= 0):
+        while (i < 64) and (i >= 0):
+            if (i != index) and (i % 8 == 0):
+                break
             if board[i] == EMPTY:
                 moves.append(i)
                 takes.append(False)
@@ -552,13 +561,13 @@ def in_check(board, king_index):
     """ Checks if black or white King at specified index is currently in check """
     # white in check ?
     if board[king_index] == KING:
-        oppponent_piece_offset = 6
+        opponent_piece_offset = 6
     # black in check ?
     elif board[king_index] == KING + 6:
-        oppponent_piece_offset = 0
+        opponent_piece_offset = 0
 
     opp_pieces = [PAWN, KING, QUEEN, BISHOP, ROOK, KNIGHT]
-    opp_pieces = [piece + oppponent_piece_offset for piece in opp_pieces]
+    opp_pieces = [piece + opponent_piece_offset for piece in opp_pieces]
 
     for b_index in range(64):
         if board[b_index] in opp_pieces:
@@ -580,7 +589,7 @@ def move_piece(board, moving_piece_index, to_move_to_index, piece_offset):
         moved_piece = board[to_move_to_index]
         board[to_move_to_index] = square_copy
         board[moving_piece_index] = moved_piece
-
+        
         # move failed 
         return (board, False)
     
@@ -705,9 +714,9 @@ if __name__ == "__main__":
         
         # display current move colour
         if white_move:
-            screen.blit(piscolabis_font.render("White to move", True, (255, 90, 95)), (1565, 752))
+            screen.blit(piscolabis_font.render("White to move", True, (255, 90, 95)), (1570, 745))
         else:
-            screen.blit(piscolabis_font.render("Black to move", True, (255, 90, 95)), (1565, 752))
+            screen.blit(piscolabis_font.render("Black to move", True, (255, 90, 95)), (1570, 745))
         
         pg.display.update()
         
