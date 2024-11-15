@@ -1,5 +1,5 @@
 import pygame as pg
-from copy import deepcopy
+from random import randint
 
 flags = pg.SCALED
 screen = pg.display.set_mode((1920, 1504), flags, vsync=1)
@@ -40,6 +40,11 @@ debug_opt = pg.image.load("debug.png")
 
 start_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 board = []
+
+move_sound_effects = [pg.mixer.Sound("sound_effects/Wood Block1.wav"),
+                      pg.mixer.Sound("sound_effects/Wood Block2.wav"),
+                      pg.mixer.Sound("sound_effects/Wood Block3.wav")]
+
 
 def fen_to_board(fen):
     """ convert fen notation string to board that can be used with engine [TO BE COMPLETED] """
@@ -282,7 +287,7 @@ def get_legal(board, index):
                 break
 
         # down
-        for i in range(index + 8, 48 + index % 8 + 1, 8):
+        for i in range(index + 8, 56 + index % 8 + 1, 8):
             if board[i] == EMPTY:
                 moves.append(i)
                 takes.append(False)
@@ -527,8 +532,16 @@ def get_legal(board, index):
             for y in range(-1, 2, 1):
                 move_index = index + x + (y * 8)
 
+                # skip square king is on
                 if move_index == index:
                     continue
+                
+                # skip squares which are not on the same rank as the king 
+                elif (move_index % 8 == 7) and (index % 8 == 0):
+                    continue
+                elif (move_index % 8 == 0) and (index % 8 == 7):
+                    continue
+
 
                 if (move_index >= 0) and (move_index < 64):
                     if board[move_index] == EMPTY:
@@ -542,8 +555,15 @@ def get_legal(board, index):
         for x in range(-1, 2, 1):
             for y in range(-1, 2, 1):
                 move_index = index + x + (y * 8)
-
+               
+                # skip square king is on
                 if move_index == index:
+                    continue
+                
+                # skip squares which are not on the same rank as the king 
+                elif (move_index % 8 == 7) and (index % 8 == 0):
+                    continue
+                elif (move_index % 8 == 0) and (index % 8 == 7):
                     continue
 
                 if (move_index >= 0) and (move_index < 64):
@@ -594,8 +614,54 @@ def move_piece(board, moving_piece_index, to_move_to_index, piece_offset):
         return (board, False)
     
     else:
+        if (board[to_move_to_index] == PAWN) and (to_move_to_index < 8):
+            board = promote_pawn_selection(board, board_index, piece_offset=0)
+        
+        elif (board[to_move_to_index] == PAWN + 6) and (to_move_to_index >= 56):
+            board = promote_pawn_selection(board, board_index, piece_offset=6)
+
         # move succeeded
         return (board, True)
+
+
+def promote_pawn_selection(board, board_index, piece_offset):
+    choosing = True
+
+    # promotion pieces thumbnail images
+    thumbnail_codes = [QUEEN, ROOK, KNIGHT, BISHOP]
+    thumbnails = [pg.transform.scale(piece_imgs[thumbnail_code + piece_offset], (94, 94)) for thumbnail_code in thumbnail_codes]
+
+    ui_posx, ui_posy = ((board_index % 8) * 188), ((board_index // 8) * 188)
+
+    ui_rect_surf = pg.Surface((396, 100))
+    ui_rect_surf.set_alpha(8)
+    ui_rect_surf.fill((199, 234, 228))
+
+    for i, thumbnail in enumerate(thumbnails):
+        ui_rect_surf.blit(thumbnail, (i * 95, 0))
+    
+    # ui for user to make promotion piece choice
+    while choosing:
+        screen.blit(ui_rect_surf, (ui_posx, ui_posy))
+
+        pg.display.update()
+
+        for event in pg.event.get():
+            # check if user has clicked on an option
+            if event.type == pg.MOUSEBUTTONDOWN:
+                mouse_posx, mouse_posy = pg.mouse.get_pos()
+
+                # in bounds of thumbnail ui ? 
+                if (mouse_posx > ui_posx) and (mouse_posx < ui_posx + 396):
+                    if (mouse_posy > ui_posy) and (mouse_posy < ui_posy + 100):
+                        piece_option = (mouse_posx - ui_posx) // 95
+                        board[board_index] = thumbnail_codes[piece_option] + piece_offset
+                        choosing = False
+
+        clock.tick()
+
+    return board
+    
 
 
 
@@ -610,7 +676,6 @@ white_move = True
 
 piece_drag = False
 drag_n_drop_details = [False, -1, (0, 0)]
-
 
 
 """ ====================== Main Program ====================== """
@@ -649,6 +714,7 @@ if __name__ == "__main__":
                             white_move = False
                             piece_drag = False
                             drag_n_drop_details = [False, -1, (0, 0)]
+                            move_sound_effects[randint(0, 1)].play()
                 
                 # black's move
                 else:
@@ -670,6 +736,7 @@ if __name__ == "__main__":
                             white_move = True
                             piece_drag = False
                             drag_n_drop_details = [False, -1, (0, 0)]
+                            move_sound_effects[randint(0, 1)].play()
             
             # drag and drop move handling
             elif event.type == pg.MOUSEBUTTONUP:
@@ -696,6 +763,7 @@ if __name__ == "__main__":
 
                     if move_made:
                         white_move = not(white_move)
+                        move_sound_effects[randint(0, 1)].play()
                 
                 piece_drag = False
                 drag_n_drop_details = [False, -1, (0, 0)]
@@ -714,6 +782,9 @@ if __name__ == "__main__":
         
         # display current move colour
         if white_move:
+
+
+        
             screen.blit(piscolabis_font.render("White to move", True, (255, 90, 95)), (1570, 745))
         else:
             screen.blit(piscolabis_font.render("Black to move", True, (255, 90, 95)), (1570, 745))
