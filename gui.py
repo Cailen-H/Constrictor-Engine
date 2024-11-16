@@ -172,11 +172,11 @@ def get_legal(board, index):
                 moves.append(index - 16)
                 takes.append(False)
         
-        if board[index - 7] > QUEEN:
+        if (board[index - 7] > QUEEN) and (index % 8 != 7):
             moves.append(index - 7)
             takes.append(True)
         
-        if board[index - 9] > QUEEN:
+        if (board[index - 9] > QUEEN) and (index % 8 != 0):
             moves.append(index - 9)
             takes.append(True)
     
@@ -190,11 +190,11 @@ def get_legal(board, index):
                 moves.append(index + 16)
                 takes.append(False)
             
-        if (board[index + 7] <= QUEEN) and (board[index + 7] != EMPTY):
+        if ((board[index + 7] <= QUEEN) and (board[index + 7] != EMPTY)) and (index % 8 != 0):
             moves.append(index + 7)
             takes.append(True)
         
-        if (board[index + 9] <= QUEEN) and (board[index + 9] != EMPTY):
+        if ((board[index + 9] <= QUEEN) and (board[index + 9] != EMPTY)) and (index % 8 != 7):
             moves.append(index + 9)
             takes.append(True)
 
