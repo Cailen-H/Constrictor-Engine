@@ -154,7 +154,7 @@ def draw_bg(board, legal_moves, takes, drag_n_drop=[False, -1, (0, 0)]):
 
 
 
-def get_legal(board, index):
+def get_legal(board, index, can_castle):
     """ Given a board array and piece index return legal move indices for the piece at the index  """
     moves = []
     takes = []
@@ -550,6 +550,41 @@ def get_legal(board, index):
                     elif board[move_index] > QUEEN:
                         moves.append(move_index)    
                         takes.append(True)
+        
+        # can white castle kingside ?
+        if can_castle[0]:
+            opp_moves = get_opponent_moves(board, 6)
+            kingside = True
+
+            # check if king side castle is legal
+            for square in range(61, 63):
+                if square in opp_moves:
+                    kingside = False
+                    
+                elif board[square] != EMPTY:
+                    kingside = False
+            
+            if kingside:
+                moves.append(62)
+                takes.append(False)
+        
+        # can white castle queenside ?
+        if can_castle[1]:
+            opp_moves = get_opponent_moves(board, 6)
+            queenside = True
+
+            # check if queen side castle is legal
+            for square in range(57, 60):
+                if square in opp_moves:
+                    queenside = False
+                elif board[square] != EMPTY:
+                    queenside = False
+
+            if queenside:
+                moves.append(58)
+                takes.append(False)
+            
+
     # black king
     if board[index] == KING + 6:
         for x in range(-1, 2, 1):
@@ -572,56 +607,146 @@ def get_legal(board, index):
                         takes.append(False)
                     elif board[move_index] <= QUEEN:
                         moves.append(move_index)    
-                        takes.append(True)                
+                        takes.append(True)          
+
+        # can black castle kingside ?
+        if can_castle[2]:
+            opp_moves = get_opponent_moves(board, 0)
+            kingside = True
+
+            # check if king side castle is legal
+            for square in range(5, 7):
+                if square in opp_moves:
+                    kingside = False
+                elif board[square] != EMPTY:
+                    kingside = False
+            
+            if kingside:
+                moves.append(6)
+                takes.append(False)
+    
+        # can black castle queenside
+        if can_castle[3]:  
+            opp_moves = get_opponent_moves(board, 0)
+            queenside = True
+
+            # check if queen side castle is legal
+            for square in range(1, 4):
+                if square in opp_moves:
+                    queenside = False
+                elif board[square] != EMPTY:
+                    queenside = False
+
+            if queenside:
+                moves.append(2)
+                takes.append(False)
 
     return (moves, takes)
 
 
-def in_check(board, king_index):
-    """ Checks if black or white King at specified index is currently in check """
-    # white in check ?
-    if board[king_index] == KING:
-        opponent_piece_offset = 6
-    # black in check ?
-    elif board[king_index] == KING + 6:
-        opponent_piece_offset = 0
+def get_opponent_moves(board, opponent_piece_offset):
+    """ Returns a list of squares that the opponent can legally move to on the given board """    
 
     opp_pieces = [PAWN, KING, QUEEN, BISHOP, ROOK, KNIGHT]
     opp_pieces = [piece + opponent_piece_offset for piece in opp_pieces]
 
+    opp_moves = []
+
     for b_index in range(64):
         if board[b_index] in opp_pieces:
-            opp_moves = get_legal(board, b_index)
-     
-            if king_index in opp_moves[0]:
-                return True
+            opp_piece_moves = get_legal(board, b_index, [False, False, False, False])[0]
+
+            for square_index in opp_piece_moves:
+                opp_moves.append(square_index)
+    
+    return opp_moves
+
+
+def in_check(board, king_index):
+    """ Checks if black or white King at specified index is currently in check """
+
+    offset_param = 6 if (board[king_index] == KING) else 0
+    opp_moves = get_opponent_moves(board, offset_param)
+
+    if king_index in opp_moves:
+        return True
+    else:
+        return False
+
+
+def move_piece(board, moving_piece_index, to_move_to_index, piece_offset, can_castle=[True, True, True, True]):
+    # [white kingside, white queenside, black kingside, black queenside]
+    updated_can_castle = [b for b in can_castle]
+
+    # check for castling and handle rook movement too
+    if (board[moving_piece_index] == KING + piece_offset):
+        if (abs(moving_piece_index - to_move_to_index) == 2):
+            # white kingside castle
+            if to_move_to_index == 62:
+                board[63] = EMPTY
+                board[61] = ROOK
+                updated_can_castle[0] = False
             
-    return False
+            # white queenside castle
+            elif to_move_to_index == 58:
+                board[56] = EMPTY
+                board[59] = ROOK
+                updated_can_castle[1] = False
 
+            # black kingside castle
+            elif to_move_to_index == 6:
+                board[7] = EMPTY
+                board[5] = ROOK + 6
+                updated_can_castle[2] = False
 
-def move_piece(board, moving_piece_index, to_move_to_index, piece_offset):
+            # black queenside castle       
+            elif to_move_to_index == 2:
+                board[0] = EMPTY
+                board[3] = ROOK + 6
+                updated_can_castle[3] = False
+        
+        # regular king move (so right to castle is now gone for player who moved king)
+        else:
+            # white king
+            if piece_offset == 0:
+                updated_can_castle[0], updated_can_castle[1] = False, False
+            
+            # black king
+            elif piece_offset == 6: 
+                updated_can_castle[2], updated_can_castle[3] = False, False
+
+    rook_squares = [63, 56, 7, 0]
+
+    # check if player is moving a rook and lost the right to castle kingside or queenside
+    if moving_piece_index in rook_squares:
+        if updated_can_castle[rook_squares.index(moving_piece_index)] is True:
+            updated_can_castle[rook_squares.index(moving_piece_index)] = False
+
+    # naive move carried out
     square_copy = board[to_move_to_index]
     board[to_move_to_index] = board[moving_piece_index]
-    board[moving_piece_index] = EMPTY
+    board[moving_piece_index] = EMPTY        
 
-    # Check if move results in check for white/black. If so reverse move as it is not legal.
+    # Check if move results in check for white/black. If so reverse naive move as it is not legal.
     if in_check(board, board.index(KING + piece_offset)):
         moved_piece = board[to_move_to_index]
         board[to_move_to_index] = square_copy
         board[moving_piece_index] = moved_piece
-        
-        # move failed 
-        return (board, False)
+
+        # naive move failed 
+        return (board, False, can_castle)
     
     else:
+        # can white pawn promote ?
         if (board[to_move_to_index] == PAWN) and (to_move_to_index < 8):
             board = promote_pawn_selection(board, board_index, piece_offset=0)
         
+        # can black pawn promote ?
         elif (board[to_move_to_index] == PAWN + 6) and (to_move_to_index >= 56):
             board = promote_pawn_selection(board, board_index, piece_offset=6)
 
         # move succeeded
-        return (board, True)
+        return (board, True, updated_can_castle)
 
 
 def promote_pawn_selection(board, board_index, piece_offset):
@@ -677,6 +802,9 @@ white_move = True
 piece_drag = False
 drag_n_drop_details = [False, -1, (0, 0)]
 
+# format of [Kingside (white) : Bool, Queenside (white) : Bool, Kingside (black) : Bool, Queenside (black) : Bool]
+can_castle = [True, True, True, True]
+
 
 """ ====================== Main Program ====================== """
 
@@ -697,7 +825,7 @@ if __name__ == "__main__":
                 # white's move
                 if white_move is True:
                     if ((board[board_index] <= QUEEN) and not(board_index in legal_moves)):
-                        legal_moves, take_moves = get_legal(board, board_index)
+                        legal_moves, take_moves = get_legal(board, board_index, can_castle)
                         moving_index = board_index
 
                         if board[board_index] != EMPTY:
@@ -705,7 +833,7 @@ if __name__ == "__main__":
                 
                     # move piece
                     if board_index in legal_moves:
-                        board, move_made = move_piece(board, moving_index, board_index, piece_offset=0)
+                        board, move_made, can_castle = move_piece(board, moving_index, board_index, 0, can_castle)
 
                         legal_moves = []
                         take_moves = []
@@ -719,7 +847,7 @@ if __name__ == "__main__":
                 # black's move
                 else:
                     if ((board[board_index] > QUEEN) or (board[board_index] == EMPTY)) and not(board_index in legal_moves):
-                        legal_moves, take_moves = get_legal(board, board_index)
+                        legal_moves, take_moves = get_legal(board, board_index, can_castle)
                         moving_index = board_index
                         
                         if board[board_index] != EMPTY:
@@ -727,7 +855,7 @@ if __name__ == "__main__":
                 
                     # move piece
                     if board_index in legal_moves:
-                        board, move_made = move_piece(board, moving_index, board_index, piece_offset=6)
+                        board, move_made, can_castle = move_piece(board, moving_index, board_index, 6, can_castle)
 
                         legal_moves = []
                         take_moves = []
@@ -756,7 +884,7 @@ if __name__ == "__main__":
                     else:
                         piece_offset = 6
 
-                    board, move_made = move_piece(board, moving_index, board_index, piece_offset)
+                    board, move_made, can_castle = move_piece(board, moving_index, board_index, piece_offset, can_castle)
 
                     legal_moves = []
                     take_moves = []
