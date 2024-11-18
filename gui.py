@@ -469,7 +469,7 @@ def get_legal(board, index, can_castle):
             possible.append(right_up)
             possible.append(right_down)
         
-        if index % 8 > 2:
+        if index % 8 >= 2:
             left_down = index - 8 - 2
             left_up = index + 8 - 2
 
@@ -510,7 +510,7 @@ def get_legal(board, index, can_castle):
             possible.append(right_up)
             possible.append(right_down)
         
-        if index % 8 > 2:
+        if index % 8 >= 2:
             left_down = index - 8 - 2
             left_up = index + 8 - 2
 
@@ -910,14 +910,10 @@ if __name__ == "__main__":
         
         # display current move colour
         if white_move:
-
-
-        
             screen.blit(piscolabis_font.render("White to move", True, (255, 90, 95)), (1570, 745))
         else:
             screen.blit(piscolabis_font.render("Black to move", True, (255, 90, 95)), (1570, 745))
         
         pg.display.update()
-        
         clock.tick()
             
