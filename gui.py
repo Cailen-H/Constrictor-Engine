@@ -19,7 +19,6 @@ BISHOP = 4
 ROOK = 5
 QUEEN = 6
 
-
 piece_imgs = {KING : pg.image.load("pieces/white_king.png"),
               PAWN : pg.image.load("pieces/white_pawn.png"),
               KNIGHT : pg.image.load("pieces/white_knight.png"),
@@ -751,6 +750,10 @@ def move_piece(board, moving_piece_index, to_move_to_index, piece_offset, can_ca
         if (board[to_move_to_index - 1] in opp_pieces) and (to_move_to_index % 8 != 0):
             en_passant_square = (moving_piece_index - 8) if piece_offset == 0 else (moving_piece_index + 8)
             updated_can_en_passant.append([to_move_to_index - 1, en_passant_square])
+        
+        if (board[to_move_to_index + 1] in opp_pieces) and (to_move_to_index % 8 != 7):
+            en_passant_square = (moving_piece_index - 8) if piece_offset == 0 else (moving_piece_index + 8)
+            updated_can_en_passant.append([to_move_to_index + 1, en_passant_square])
     
     # check if the current move is en passant and if so handle the taking of opponent pawn manually
     for en_passant_opp in can_en_passant:
